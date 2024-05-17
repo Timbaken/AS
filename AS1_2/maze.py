@@ -49,3 +49,4 @@ class Maze:
 
             maze += "\n"
         return maze
+

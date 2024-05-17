@@ -1,6 +1,7 @@
 from maze import Maze
 from agent import Agent
 from policy import Policy
+from valueiterationpolicy import Valueiterationpolicy
 
 import numpy as np
 
@@ -14,8 +15,14 @@ startPosition = (3, 2)
 maze = Maze(rewards, terminalpositions, startPosition)
 
 policy = Policy()
+treshold = 0.01
+discount = 1
+visualize = True
+policy2 = Valueiterationpolicy(maze, treshold, discount, visualize)
 
-agent = Agent(maze, policy)
+print(policy2)
+
+agent = Agent(maze, policy2)
 
 print(agent, "\n")
 
@@ -26,3 +33,4 @@ for _ in range(100):
         break
 
 print(agent.score)
+
