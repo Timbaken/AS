@@ -1,19 +1,25 @@
 from maze import Maze
 from policy import Policy
 from termcolor import colored
+import random
 
 class Agent:
-    def __init__(self, maze: Maze, policy: Policy) -> None:
+    def __init__(self, maze: Maze, policy: Policy, probability: float) -> None:
         self.policy = policy
         self.maze = maze
         self.currentposition = maze.startPosition
         self.score = 0
+        self.actions = ["up", "down", "right", "left"]
+        self.probability = probability
 
     def act(self):
         action = self.policy.select_action(self.maze.states[self.currentposition[0]][self.currentposition[1]])
+        print(f"attempted action: {action}")
+        if random.random() > self.probability:
+            action = random.choice([direction for direction in self.actions if direction != action])
         self.currentposition = self.maze.step(self.currentposition, action)
         self.score += self.maze.rewards[self.currentposition[0]][self.currentposition[1]]
-        print(action)
+        print(f"actual action: {action}")
         print(self, "\n")
 
     def __str__(self) -> str:
