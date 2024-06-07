@@ -64,7 +64,7 @@ def q():
     agent = QAgent(maze)
     agent.q_learning(iterations=1_000_000)
 
-def doubleq():
+def doubleq(probability):
     rewards = np.array(
         [[-1, -1, -1, 40],
         [-1, -1, -10, -10],
@@ -74,13 +74,14 @@ def doubleq():
     terminalpositions = [(3, 0), (0, 3)]
     startPosition = (3, 2)
 
-    maze = Maze(rewards, terminalpositions, startPosition)
+    maze = Maze(rewards, terminalpositions, startPosition, probability)
 
     agent = DoubleQAgent(maze)
-    agent.double_q_learning(iterations=1_000_000)
+    agent.q_learning(iterations=1_000_000)
 
 if __name__ == "__main__":
+    probability = 0.9
     # td()
     # SARSA()
     # q()
-    doubleq()
+    doubleq(probability)

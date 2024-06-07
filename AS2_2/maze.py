@@ -1,14 +1,17 @@
-import numpy as np
 from state import State
+
 from termcolor import colored
 
 import numpy as np
+import numpy as np
+import random
 
 class Maze:
-    def __init__(self, rewards: np.ndarray, terminalpositions: list[tuple[int, int]], startposition: tuple[int, int]) -> None:
+    def __init__(self, rewards: np.ndarray, terminalpositions: list[tuple[int, int]], startposition: tuple[int, int], probability: float = 1.0) -> None:
         self.rewards = rewards
         self.terminalpositions = terminalpositions
         self.startPosition = startposition
+        self.probability = probability
         
         self.states = np.empty([len(self.rewards), len(self.rewards[0])], dtype=object) 
 
@@ -27,6 +30,9 @@ class Maze:
         }
 
     def step(self, coordinates: tuple[int, int], action: str):
+        if random.random() > self.probability:
+            action = random.choice([direction for direction in ["up", "down", "right", "left"] if direction != action])
+
         newPosition = tuple(a + b for a, b in zip(coordinates, self.actions[action]))
         length = self.states.shape[0]
 

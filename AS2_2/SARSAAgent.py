@@ -14,11 +14,11 @@ class SARSAAgent(Agent):
 
         self.q: dict[State: dict[str: float]] = {}
 
-    def greedy(self, state: State, epsilon: float):
+    def greedy(self, state_dict: dict[str: float], epsilon: float):
         if random.random() < epsilon:
             return random.choice(self.actions)
         else:
-            return max(self.q[state], key=self.q[state].get)
+            return max(state_dict, key=state_dict.get)
 
     def SARSA(self,
               alpha: float=.1,
@@ -38,14 +38,14 @@ class SARSAAgent(Agent):
         for _ in tqdm(range(iterations)):
             current_state: State = self.maze.states[self.currentposition]
 
-            a = self.greedy(current_state, epsilon)
+            a = self.greedy(self.q[current_state], epsilon)
 
             while not current_state.terminal:
                 position = self.maze.step(current_state.position, a)
                 reward = self.maze.rewards[position]
                 new_state = self.maze.states[position]
                 
-                new_a = self.greedy(new_state, epsilon)
+                new_a = self.greedy(self.q[new_state], epsilon)
 
                 self.q[current_state][a] += alpha * (
                     reward + 
